@@ -13,20 +13,17 @@ jediB = Blueprint('jedi', __name__)
 
 
 @jediB.route('/welcome')
-# class JediWelcome():
 def get_jedi_home():
     jedi_greetings = "Welcome to the Jedi Home"
     return jedi_greetings
 
 
 @jediB.route('/all')
-# class Jedis:
 def get_all_jedi():
     return jsonify({'jedi': jedi})
 
 
 @jediB.route('/<jedi_id>')
-# class Jedi:
 def get_jedi(jedi_id):
 
     for j in jedi:
@@ -37,7 +34,6 @@ def get_jedi(jedi_id):
 
 
 @jediB.route('', methods=["POST"])
-# class CreateJedi:
 def post_jedi():
 
     count = len(jedi) + 1
@@ -49,12 +45,11 @@ def post_jedi():
 
 
 @jediB.route('', methods=["PUT"])
-# class UpdateJedi:
 def put_jedi():
 
     count = len(jedi) + 1
     jedi_name = request.get_json()["name"]
-    jedi_movie= request.get_json()["movie"]
+    jedi_movie = request.get_json()["movie"]
 
     for j in jedi:
         if j["name"] == jedi_name:

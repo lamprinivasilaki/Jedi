@@ -12,7 +12,6 @@ sithB = Blueprint('sith', __name__)
 
 
 @sithB.route('')
-# class Sith:
 def get_sith():
     sith_id = request.args.get("id")
     movie = request.args.get("movie")
