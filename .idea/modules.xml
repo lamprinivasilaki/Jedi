@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../moda-backend/.idea/moda-backend.iml" filepath="$PROJECT_DIR$/../moda-backend/.idea/moda-backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/poc.iml" filepath="$PROJECT_DIR$/.idea/poc.iml" />
     </modules>
   </component>

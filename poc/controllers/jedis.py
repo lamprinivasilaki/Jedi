@@ -1,5 +1,7 @@
 from flask import Blueprint, request
 from flask.json import jsonify
+from flask_restplus import Resource
+from restplus import api
 
 
 jedi = [
@@ -9,54 +11,56 @@ jedi = [
     {"name": "Mace Windu", "id": 4}
 ]
 
-jediB = Blueprint('jedi', __name__)
+ns = api.namespace('jedi', description='Operations on Jedi')
 
 
-@jediB.route('/welcome')
-def get_jedi_home():
-    jedi_greetings = "Welcome to the Jedi Home"
-    return jedi_greetings
+@ns.route('/welcome')
+class JediHome(Resource):
+    def get(self):
+        jedi_greetings = "Welcome to the Jedi Home"
+        return jedi_greetings
 
 
-@jediB.route('/all')
-def get_all_jedi():
-    return jsonify({'jedi': jedi})
+@ns.route('/all')
+class JediAll(Resource):
+    def get(self):
+        return jsonify({'jedi': jedi})
 
 
-@jediB.route('/<jedi_id>')
-def get_jedi(jedi_id):
+@ns.route('/<jedi_id>')
+class JediById(Resource):
+    def get(self, jedi_id):
+        for j in jedi:
+            if j["id"] == int(jedi_id):
+                return jsonify({'jedi': j})
 
-    for j in jedi:
-        if j["id"] == int(jedi_id):
-            return jsonify({'jedi': j})
-
-    return jsonify({'jedi': jedi})
-
-
-@jediB.route('', methods=["POST"])
-def post_jedi():
-
-    count = len(jedi) + 1
-    jedi_name = request.get_json()["name"]
-
-    jedi.append({"name": jedi_name, "id": count})
-
-    return jsonify({'jedi': jedi})
+        return jsonify({'jedi': jedi})
 
 
-@jediB.route('', methods=["PUT"])
-def put_jedi():
+@ns.route('', methods=["POST"])
+class JediCreate(Resource):
+    def post(self):
+        count = len(jedi) + 1
+        jedi_name = request.get_json()["name"]
 
-    count = len(jedi) + 1
-    jedi_name = request.get_json()["name"]
-    jedi_movie = request.get_json()["movie"]
+        jedi.append({"name": jedi_name, "id": count})
 
-    for j in jedi:
-        if j["name"] == jedi_name:
-            j["movie"] = jedi_movie
-            jedi[j["id"]]["movie"] = jedi_movie
-            return jsonify({'jedi': j})
+        return jsonify({'jedi': jedi})
 
-    jedi.append({"name": jedi_name, "id": count})
 
-    return jsonify({'jedi': jedi})
+@ns.route('', methods=["PUT"])
+class JediUpdate(Resource):
+    def put(self):
+        count = len(jedi) + 1
+        jedi_name = request.get_json()["name"]
+        jedi_movie = request.get_json()["movie"]
+
+        for j in jedi:
+            if j["name"] == jedi_name:
+                j["movie"] = jedi_movie
+                jedi[j["id"]]["movie"] = jedi_movie
+                return jsonify({'jedi': j})
+
+        jedi.append({"name": jedi_name, "id": count})
+
+        return jsonify({'jedi': jedi})

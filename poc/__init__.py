@@ -1,12 +1,18 @@
-from flask import Flask
-from controllers.jedis import jediB
-from controllers.siths import sithB
+from flask import Flask, Blueprint
+from restplus import api
+from controllers.jedis import ns as jedi_namespace
+from controllers.siths import ns as sith_namespace
 
 
 def create_application():
     flask_app = Flask(__name__)
 
-    flask_app.register_blueprint(jediB, url_prefix="/jedi")
-    flask_app.register_blueprint(sithB, url_prefix="/sith")
+    rest_api_blueprint = Blueprint('api', __name__, url_prefix='/api')
+    api.init_app(rest_api_blueprint)
+
+    api.add_namespace(jedi_namespace)
+    api.add_namespace(sith_namespace)
+
+    flask_app.register_blueprint(rest_api_blueprint)
 
     return flask_app
