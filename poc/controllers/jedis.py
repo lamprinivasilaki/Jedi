@@ -2,7 +2,7 @@ from flask_restplus import Resource
 from restplus import api
 from webargs.flaskparser import use_kwargs
 
-from models.jedi import JediSchema
+from models.forceful import ForcefulSchema
 from infrastructure.decorators import dump_with_schema
 
 
@@ -28,12 +28,12 @@ class JediHome(Resource):
 @ns.route('')
 class JediList(Resource):
 
-    @dump_with_schema(JediSchema(dump_only=("id", "name")))
+    @dump_with_schema(ForcefulSchema(dump_only=("id", "name")))
     def get(self):
         return jedi
 
-    @use_kwargs(JediSchema(only=(["name"])))
-    @dump_with_schema(JediSchema())
+    @use_kwargs(ForcefulSchema(only=(["name"])))
+    @dump_with_schema(ForcefulSchema())
     def post(self, name):
         count = len(jedi) + 1
         jedi_name = name
@@ -42,8 +42,8 @@ class JediList(Resource):
 
         return jedi
 
-    @use_kwargs(JediSchema(only=("name", "movie")))
-    @dump_with_schema(JediSchema())
+    @use_kwargs(ForcefulSchema(only=("name", "movie")))
+    @dump_with_schema(ForcefulSchema())
     def put(self, name, movie):
         jedi_name = name
         jedi_movie = movie
@@ -63,7 +63,7 @@ class JediList(Resource):
 @ns.route('/<jedi_id>')
 class Jedi(Resource):
 
-    @dump_with_schema(JediSchema())
+    @dump_with_schema(ForcefulSchema())
     def get(self, jedi_id):
         for j in jedi:
             if j["id"] == int(jedi_id):
