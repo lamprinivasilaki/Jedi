@@ -2,6 +2,13 @@ from flask import Blueprint, request
 from flask.json import jsonify
 from flask_restplus import Resource
 from restplus import api
+from marshmallow import Schema, fields
+
+
+class JediSchema(Schema):
+    id = fields.Number()
+    name = fields.String()
+    movie = fields.String()
 
 
 jedi = [
