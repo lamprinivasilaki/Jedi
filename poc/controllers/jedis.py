@@ -6,6 +6,16 @@ from marshmallow import Schema, fields
 from webargs.flaskparser import use_kwargs
 
 
+def dump_with_schema():
+    def decorator(func):
+        def wrapper(*args, **kwargs) -> str:
+            response = func(*args, **kwargs)
+
+            return jsonify(response)
+        return wrapper
+    return decorator
+
+
 class JediSchema(Schema):
     id = fields.Number()
     name = fields.String()
@@ -34,19 +44,22 @@ class JediHome(Resource):
 @ns.route('')
 class JediList(Resource):
 
+    @dump_with_schema(JediSchema(dump_only=("id", "name")))
     def get(self):
-        return jsonify({'jedi': jedi})
+        return jedi
 
     @use_kwargs(JediSchema(only=(["name"])))
+    @dump_with_schema(JediSchema())
     def post(self, name):
         count = len(jedi) + 1
         jedi_name = name
 
         jedi.append({"name": jedi_name, "id": count})
 
-        return jsonify({'jedi': jedi})
+        return jedi
 
     @use_kwargs(JediSchema(only=("name", "movie")))
+    @dump_with_schema(JediSchema())
     def put(self, name, movie):
         jedi_name = name
         jedi_movie = movie
@@ -58,17 +71,18 @@ class JediList(Resource):
                 position = int(j["id"]) - 1
                 jedi[position]["movie"] = jedi_movie
 
-                return jsonify({'jedi': j})
+                return j
 
-        return jsonify({'jedi': jedi})
+        return jedi
 
 
 @ns.route('/<jedi_id>')
 class Jedi(Resource):
 
+    @dump_with_schema(JediSchema())
     def get(self, jedi_id):
         for j in jedi:
             if j["id"] == int(jedi_id):
-                return jsonify({'jedi': j})
+                return j
 
-        return jsonify({'jedi': jedi})
+        return jedi
