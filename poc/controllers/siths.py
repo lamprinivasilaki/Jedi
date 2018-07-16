@@ -1,18 +1,8 @@
-from flask import Blueprint, request
-from flask.json import jsonify
+from flask import request
 from restplus import api
 from flask_restplus import Resource
 from marshmallow import Schema, fields
-
-
-def dump_with_schema(schema: Schema):
-    def decorator(func):
-        def wrapper(*args, **kwargs) -> str:
-            response = func(*args, **kwargs)
-
-            return jsonify(response)
-        return wrapper
-    return decorator
+from infrastructure.decorators import dump_with_schema
 
 
 class SithSchema(Schema):
