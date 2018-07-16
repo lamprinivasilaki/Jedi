@@ -6,7 +6,7 @@ from marshmallow import Schema, fields
 from webargs.flaskparser import use_kwargs
 
 
-def dump_with_schema():
+def dump_with_schema(schema: Schema):
     def decorator(func):
         def wrapper(*args, **kwargs) -> str:
             response = func(*args, **kwargs)
