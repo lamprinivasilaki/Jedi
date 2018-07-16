@@ -1,8 +1,9 @@
-from flask import Blueprint, request
+from flask import request
 from flask.json import jsonify
 from flask_restplus import Resource
 from restplus import api
 from marshmallow import Schema, fields
+from webargs.flaskparser import use_kwargs
 
 
 class JediSchema(Schema):
@@ -18,11 +19,13 @@ jedi = [
     {"name": "Mace Windu", "id": 4}
 ]
 
+
 ns = api.namespace('jedi', description='Operations on Jedi')
 
 
 @ns.route('/welcome')
 class JediHome(Resource):
+
     def get(self):
         jedi_greetings = "Welcome to the Jedi Home"
         return jedi_greetings
@@ -30,20 +33,23 @@ class JediHome(Resource):
 
 @ns.route('')
 class JediList(Resource):
+
     def get(self):
         return jsonify({'jedi': jedi})
 
-    def post(self):
+    @use_kwargs(JediSchema(only=("name", "movie")))
+    def post(self, name, movie):
         count = len(jedi) + 1
-        jedi_name = request.get_json()["name"]
+        jedi_name = name
 
         jedi.append({"name": jedi_name, "id": count})
 
         return jsonify({'jedi': jedi})
 
-    def put(self):
-        jedi_name = request.get_json()["name"]
-        jedi_movie = request.get_json()["movie"]
+    @use_kwargs(JediSchema(only=("name", "movie")))
+    def put(self, name, movie):
+        jedi_name = name
+        jedi_movie = movie
 
         for j in jedi:
             if j["name"] == jedi_name:
