@@ -37,8 +37,8 @@ class JediList(Resource):
     def get(self):
         return jsonify({'jedi': jedi})
 
-    @use_kwargs(JediSchema(only=("name", "movie")))
-    def post(self, name, movie):
+    @use_kwargs(JediSchema(only=(["name"])))
+    def post(self, name):
         count = len(jedi) + 1
         jedi_name = name
 
