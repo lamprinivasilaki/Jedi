@@ -1,14 +1,9 @@
 from flask_restplus import Resource
 from restplus import api
-from marshmallow import Schema, fields
 from webargs.flaskparser import use_kwargs
+
+from models.jedi import JediSchema
 from infrastructure.decorators import dump_with_schema
-
-
-class JediSchema(Schema):
-    id = fields.Number()
-    name = fields.String()
-    movie = fields.String()
 
 
 jedi = [

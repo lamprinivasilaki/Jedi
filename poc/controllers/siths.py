@@ -1,14 +1,9 @@
 from flask import request
 from restplus import api
 from flask_restplus import Resource
-from marshmallow import Schema, fields
+
+from models.sith import SithSchema
 from infrastructure.decorators import dump_with_schema
-
-
-class SithSchema(Schema):
-    id = fields.Number()
-    name = fields.String()
-    movie = fields.String()
 
 
 sith_lords = [
