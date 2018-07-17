@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint
-from restplus import api
-from controllers.jedis import ns as jedi_namespace
-from controllers.siths import ns as sith_namespace
+from restapi.restplus import api
+from restapi.jedi.controllers import ns as jedi_namespace
+from restapi.sith.controllers import ns as sith_namespace
 
 
 def create_application():

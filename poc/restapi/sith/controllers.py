@@ -1,8 +1,8 @@
 from flask import request
-from restplus import api
+from restapi.restplus import api
 from flask_restplus import Resource
 
-from models.forceful import ForcefulSchema
+from restapi.shared.schemas.forceful import ForcefulSchema
 from infrastructure.decorators import dump_with_schema
 
 
